@@ -1,0 +1,29 @@
+package net.isger.brick.ui;
+
+import net.isger.brick.core.BaseCommand;
+import net.isger.brick.core.Command;
+import net.isger.brick.plugin.PluginCommand;
+
+public class UICommand extends PluginCommand {
+
+    public UICommand() {
+    }
+
+    public UICommand(Command cmd) {
+        super(cmd);
+    }
+
+    public UICommand(boolean hasShell) {
+        super(hasShell);
+    }
+
+    public static UICommand getAction() {
+        return cast(BaseCommand.getAction());
+    }
+
+    public static UICommand cast(BaseCommand cmd) {
+        return cmd == null || cmd.getClass() == UICommand.class ? (UICommand) cmd
+                : cmd.infect(new UICommand(false));
+    }
+
+}
