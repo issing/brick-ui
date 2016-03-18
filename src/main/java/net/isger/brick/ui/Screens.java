@@ -20,6 +20,10 @@ public class Screens {
         LOG = LoggerFactory.getLogger(Screens.class);
     }
 
+    public Screens() {
+        this(null);
+    }
+
     @SuppressWarnings("unchecked")
     public Screens(List<Object> screens) {
         this.screens = new HashMap<String, Screen>();

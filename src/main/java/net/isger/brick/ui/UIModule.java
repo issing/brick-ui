@@ -1,27 +1,61 @@
 package net.isger.brick.ui;
 
+import net.isger.brick.StandardConstants;
+import net.isger.brick.core.Gate;
 import net.isger.brick.core.GateModule;
 import net.isger.brick.inject.Scope;
 import net.isger.brick.inject.anno.Scoped;
+import net.isger.brick.plugin.PluginModule;
 
+/**
+ * 交互模块
+ * 
+ * @author issing
+ *
+ */
 @Scoped(Scope.SINGLETON)
 public class UIModule extends GateModule {
 
-    @SuppressWarnings("unchecked")
+    private static final String UI = "ui";
+
+    /**
+     * 获取交互目标类型
+     */
     public Class<? extends UI> getTargetClass() {
-        Class<? extends UI> uiType = (Class<? extends UI>) super
-                .getTargetClass();
-        if (uiType == null) {
-            uiType = UI.class;
-        } else if (!UI.class.isAssignableFrom(uiType)) {
-            throw new IllegalArgumentException("The UI " + uiType
-                    + " must implement the " + UI.class);
-        }
-        return uiType;
+        return UI.class;
     }
 
-    public Class<? extends UI> getImplementClass() {
+    /**
+     * 获取交互实现类型
+     */
+    @SuppressWarnings("unchecked")
+    public Class<? extends Gate> getImplementClass() {
+        Class<? extends Gate> implClass = (Class<? extends Gate>) getImplementClass(
+                UI, null);
+        if (implClass == null) {
+            implClass = super.getImplementClass();
+        }
+        return implClass;
+    }
+
+    /**
+     * 获取交互默认类型
+     */
+    public Class<? extends Gate> getBaseClass() {
         return BaseUI.class;
     }
 
+    public Gate getGate(String name) {
+        Gate gate = super.getGate(name);
+        if (gate == null) {
+            PluginModule module = (PluginModule) console
+                    .getModule(StandardConstants.MOD_PLUGIN);
+            /* 查找交互插件（互通） */
+            gate = module.getGate(name);
+            if (!(gate instanceof UI)) {
+                gate = null;
+            }
+        }
+        return gate;
+    }
 }

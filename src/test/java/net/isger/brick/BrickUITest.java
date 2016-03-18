@@ -22,9 +22,9 @@ public class BrickUITest extends TestCase {
         manager.getContainerProviders();
         manager.addContainerProvider(new ContainerProvider() {
             public void register(net.isger.brick.inject.ContainerBuilder builder) {
-                builder.factory(Module.class, Constants.MOD_PLUGIN,
+                builder.factory(Module.class, StandardConstants.MOD_PLUGIN,
                         UIPluginModule.class);
-                builder.factory(UIDesigner.class, Constants.MOD_PLUGIN);
+                builder.factory(UIDesigner.class, StandardConstants.MOD_PLUGIN);
             }
 
             public boolean isReload() {
