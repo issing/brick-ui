@@ -10,15 +10,10 @@ import net.isger.brick.plugin.PluginCommand;
 import net.isger.brick.plugin.PluginTarget;
 import net.isger.util.Reflects;
 import net.isger.util.anno.Ignore;
-import net.isger.util.anno.Ignore.Mode;
 import net.isger.util.reflect.BoundField;
 
 @Ignore
 public class BaseScreen extends PluginTarget implements Screen {
-
-    /** 访问路径 */
-    @Ignore(mode = Mode.INCLUDE)
-    private String path;
 
     /** 指示参数 */
     private Map<String, Object> directs;
@@ -26,10 +21,6 @@ public class BaseScreen extends PluginTarget implements Screen {
     public BaseScreen() {
         this.directs = new ConcurrentHashMap<String, Object>();
         this.direct("name", "");
-    }
-
-    protected String getPath() {
-        return this.path;
     }
 
     protected void direct(String name, Object value) {

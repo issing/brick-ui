@@ -9,7 +9,7 @@ public abstract class AbstractUI extends BaseGate implements UI {
     protected abstract Screen getScreen(String name);
 
     public void operate() {
-        if (Strings.isEmpty(UICommand.getAction().getName())) {
+        if (Strings.isEmpty(getScreen())) {
             super.operate();
         } else {
             screen();
@@ -17,7 +17,7 @@ public abstract class AbstractUI extends BaseGate implements UI {
     }
 
     public void screen() {
-        screen(getName());
+        screen(getScreen());
     }
 
     protected void screen(String name) {
@@ -29,14 +29,8 @@ public abstract class AbstractUI extends BaseGate implements UI {
         cmd.setResult(screen);
     }
 
-    protected String getName() {
-        UICommand cmd = UICommand.getAction();
-        String name = cmd.getName();
-        if (Strings.isEmpty(name)) {
-            throw new IllegalArgumentException(
-                    "The UI name can not be null or empty");
-        }
-        return name.toLowerCase();
+    protected String getScreen() {
+        return UICommand.getAction().getScreen();
     }
 
 }

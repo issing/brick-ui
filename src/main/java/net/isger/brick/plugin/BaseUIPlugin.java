@@ -25,16 +25,15 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
     }
 
     public void operate() {
-        BaseCommand cmd = BaseCommand.getAction();
-        if (cmd instanceof UICommand && Strings.isNotEmpty(getName())) {
-            screen();
-        } else {
+        if (Strings.isEmpty(getScreen())) {
             super.operate();
+        } else {
+            screen();
         }
     }
 
     public void screen() {
-        screen(getName());
+        screen(getScreen());
     }
 
     protected void screen(String name) {
@@ -42,5 +41,9 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
         BaseCommand cmd = BaseCommand.getAction();
         screen.operate();
         cmd.setResult(screen);
+    }
+
+    protected String getScreen() {
+        return UICommand.getAction().getScreen();
     }
 }

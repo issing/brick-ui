@@ -40,18 +40,18 @@ public class BrickUITest extends TestCase {
     public void testUI() {
         Console console = manager.getConsole();
         // 调用界面
-        PluginCommand cmd = new UICommand();
+        UICommand cmd = new UICommand();
         cmd.setDomain("test");
-        cmd.setName("test");
+        cmd.setScreen("test");
         cmd.setOperate("test");
         cmd.setParameter("id", "1");
         cmd.setParameter("name", "first");
         console.execute(cmd);
 
         // 调用插件
-        cmd = PluginCommand.cast(cmd);
-        cmd.setParameter("test", "this is test.");
-        console.execute(cmd);
+        PluginCommand pcmd = PluginCommand.cast(cmd);
+        pcmd.setParameter("test", "this is test.");
+        console.execute(pcmd);
 
         assertTrue(true);
     }

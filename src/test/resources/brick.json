@@ -1,23 +1,15 @@
 ﻿{
     ui : {
         test : {
-            screens : [ {
-                path : "net.isger.brick.test.ui"
-            } ]
+            screens : "net.isger.brick.test.ui"
         }
     },
     
     plugin : {
         test : {
-            screens : [ {
+            screens : {
                 path : "net.isger.brick.test.screen"
-            } ],
-            services : [ {
-                path : "net.isger.brick.test.service"
-            } ],
-            persists : [ {
-                path : "net.isger.brick.test.persist"
-            } ]
+            }
         }
     }
 }

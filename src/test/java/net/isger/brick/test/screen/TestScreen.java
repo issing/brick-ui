@@ -8,8 +8,7 @@ public class TestScreen extends BaseScreen {
 
     public void test() {
         TestBean bean = BaseCommand.getAction().getParameter(TestBean.class);
-        System.out.println("this is plugin.test: " + bean + ", path: "
-                + this.getPath());
+        System.out.println("this is plugin.test: " + bean);
     }
 
 }

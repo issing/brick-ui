@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.isger.util.Helpers;
+import net.isger.util.Strings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,22 +46,39 @@ public class Screens {
     }
 
     public void add(Screen screen) {
-        put(null, screen);
+        put("", screen);
     }
 
     public void put(String name, Screen screen) {
-        name = Helpers.getAliasName(screen.getClass(), "Screen$", name)
-                .toLowerCase();
-        if (LOG.isDebugEnabled()) {
-            LOG.info("Binding [{}] screen [{}]", name, screen);
+        int index = name.lastIndexOf(".");
+        String key;
+        if (index++ > 0) {
+            key = name.substring(0, index);
+            name = name.substring(index);
+        } else {
+            key = "";
         }
-        screen = screens.put(name, screen);
+        key += getName(screen.getClass(), name);
+        if (LOG.isDebugEnabled()) {
+            LOG.info("Binding [{}] screen [{}]", key, screen);
+        }
+        screen = screens.put(key, screen);
         if (screen != null) {
-            LOG.warn("(!) Discard [{}] screen [{}]", name, screen);
+            LOG.warn("(!) Discard [{}] screen [{}]", key, screen);
         }
     }
 
     public Screen get(String name) {
         return screens.get(name);
     }
+
+    public static final String getName(Class<? extends Screen> clazz) {
+        return getName(clazz, "");
+    }
+
+    public static final String getName(Class<? extends Screen> clazz,
+            String name) {
+        return Helpers.getAliasName(clazz, "Screen$", Strings.toLower(name));
+    }
+
 }

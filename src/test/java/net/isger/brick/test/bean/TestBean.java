@@ -22,4 +22,8 @@ public class TestBean {
         this.name = name;
     }
 
+    public String toString() {
+        return "{id : " + id + ", name : " + name + "}";
+    }
+
 }
