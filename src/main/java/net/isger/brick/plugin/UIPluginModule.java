@@ -2,8 +2,8 @@ package net.isger.brick.plugin;
 
 import net.isger.brick.core.Gate;
 import net.isger.brick.inject.Scope;
-import net.isger.brick.inject.anno.Scoped;
 import net.isger.brick.ui.UI;
+import net.isger.brick.util.anno.Scoped;
 import net.isger.util.anno.Alias;
 
 /**

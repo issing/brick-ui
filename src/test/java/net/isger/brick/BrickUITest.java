@@ -42,14 +42,14 @@ public class BrickUITest extends TestCase {
         // 调用界面
         UICommand cmd = new UICommand();
         cmd.setDomain("test");
-        cmd.setScreen("test");
+        cmd.setName("test");
         cmd.setOperate("test");
         cmd.setParameter("id", "1");
         cmd.setParameter("name", "first");
         console.execute(cmd);
 
         // 调用插件
-        PluginCommand pcmd = PluginCommand.cast(cmd);
+        PluginCommand pcmd = UICommand.cast(cmd);
         pcmd.setParameter("test", "this is test.");
         console.execute(pcmd);
 

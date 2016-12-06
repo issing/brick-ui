@@ -1,6 +1,6 @@
 package net.isger.brick.plugin;
 
-import net.isger.brick.core.BaseCommand;
+import net.isger.brick.core.GateCommand;
 import net.isger.brick.ui.Screen;
 import net.isger.brick.ui.Screens;
 import net.isger.brick.ui.UICommand;
@@ -24,26 +24,19 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
         return screens.get(name);
     }
 
-    public void operate() {
-        if (Strings.isEmpty(getScreen())) {
-            super.operate();
+    public void operate(GateCommand cmd) {
+        PluginCommand pcmd = (PluginCommand) cmd;
+        if (Strings.isEmpty(pcmd.getName()) || !(cmd instanceof UICommand)) {
+            super.operate(cmd);
         } else {
-            screen();
+            screen((UICommand) pcmd);
         }
     }
 
-    public void screen() {
-        screen(getScreen());
-    }
-
-    protected void screen(String name) {
-        Screen screen = getScreen(name).clone();
-        BaseCommand cmd = BaseCommand.getAction();
-        screen.operate();
+    public void screen(UICommand cmd) {
+        Screen screen = getScreen(cmd.getName()).clone();
+        screen.screen(cmd);
         cmd.setResult(screen);
     }
 
-    protected String getScreen() {
-        return UICommand.getAction().getScreen();
-    }
 }

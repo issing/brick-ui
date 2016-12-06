@@ -1,36 +1,27 @@
 package net.isger.brick.ui;
 
 import net.isger.brick.core.BaseGate;
-import net.isger.util.Asserts;
+import net.isger.brick.core.GateCommand;
+import net.isger.brick.plugin.PluginCommand;
 import net.isger.util.Strings;
 
 public abstract class AbstractUI extends BaseGate implements UI {
 
     protected abstract Screen getScreen(String name);
 
-    public void operate() {
-        if (Strings.isEmpty(getScreen())) {
-            super.operate();
+    public void operate(GateCommand cmd) {
+        PluginCommand pcmd = (PluginCommand) cmd;
+        if (Strings.isEmpty(pcmd.getName())) {
+            super.operate(cmd);
         } else {
-            screen();
+            screen((UICommand) pcmd);
         }
     }
 
-    public void screen() {
-        screen(getScreen());
-    }
-
-    protected void screen(String name) {
-        Screen screen = getScreen(name);
-        Asserts.isNotNull(screen, "Not found the screen " + name);
-        screen = screen.clone();
-        UICommand cmd = UICommand.getAction();
-        screen.operate();
+    public void screen(UICommand cmd) {
+        Screen screen = getScreen(cmd.getName()).clone();
+        screen.screen(cmd);
         cmd.setResult(screen);
-    }
-
-    protected String getScreen() {
-        return UICommand.getAction().getScreen();
     }
 
 }

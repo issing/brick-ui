@@ -4,8 +4,8 @@ import net.isger.brick.StandardConstants;
 import net.isger.brick.core.Gate;
 import net.isger.brick.core.GateModule;
 import net.isger.brick.inject.Scope;
-import net.isger.brick.inject.anno.Scoped;
 import net.isger.brick.plugin.PluginModule;
+import net.isger.brick.util.anno.Scoped;
 
 /**
  * 交互模块
