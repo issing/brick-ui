@@ -9,12 +9,15 @@ import net.isger.util.anno.Ignore;
 import net.isger.util.reflect.BoundField;
 
 @Ignore
-public class BaseScreen extends PluginOperator implements Screen {
+public class BaseScreen implements Screen {
+
+    private PluginOperator operator;
 
     /** 指示参数 */
     private Map<String, Object> directs;
 
     public BaseScreen() {
+        this.operator = new PluginOperator(this);
         this.directs = new ConcurrentHashMap<String, Object>();
         this.direct("name", "");
     }
@@ -24,7 +27,7 @@ public class BaseScreen extends PluginOperator implements Screen {
     }
 
     public void screen(UICommand cmd) {
-        super.operate(cmd);
+        operator.operate(cmd);
     }
 
     public Object see(String name, Object... params) {
@@ -52,7 +55,13 @@ public class BaseScreen extends PluginOperator implements Screen {
     }
 
     public Screen clone() {
-        BaseScreen screen = (BaseScreen) super.clone();
+        BaseScreen screen;
+        try {
+            screen = (BaseScreen) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Failure to clone screen", e);
+        }
+        screen.operator = new PluginOperator(screen);
         screen.directs = new ConcurrentHashMap<String, Object>(this.directs);
         return screen;
     }
