@@ -1,5 +1,6 @@
 package net.isger.brick.ui;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,10 @@ public class Screens {
     public static final String getName(Class<? extends Screen> clazz,
             String name) {
         return Helpers.getAliasName(clazz, "Screen$", Strings.toLower(name));
+    }
+
+    public Map<String, Screen> gets() {
+        return Collections.unmodifiableMap(screens);
     }
 
 }

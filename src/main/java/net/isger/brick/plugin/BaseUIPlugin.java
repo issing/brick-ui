@@ -24,6 +24,13 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
         return screens.get(name);
     }
 
+    public void initial(PluginCommand cmd) {
+        super.initial(cmd);
+        for (Screen screen : screens.gets().values()) {
+            container.inject(screen);
+        }
+    }
+
     public void operate(GateCommand cmd) {
         PluginCommand pcmd = (PluginCommand) cmd;
         if (Strings.isEmpty(pcmd.getName()) || !(cmd instanceof UICommand)) {
