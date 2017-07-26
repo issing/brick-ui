@@ -1,6 +1,8 @@
 {
-    name : "ui",
-    module : "net.isger.brick.ui.UIModule",
-    command : "net.isger.brick.ui.UICommand",
-    dependencies : [ "plugin" ]
+    "name": "ui",
+    "module": "net.isger.brick.ui.UIModule",
+    "command": "net.isger.brick.ui.UICommand",
+    "dependencies": [
+        "plugin"
+    ]
 }

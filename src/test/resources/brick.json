@@ -1,14 +1,13 @@
-﻿{
-    ui : {
-        test : {
-            screens : "net.isger.brick.test.ui"
+{
+    "ui": {
+        "test": {
+            "screens": "net.isger.brick.test.ui"
         }
     },
-    
-    plugin : {
-        test : {
-            screens : {
-                path : "net.isger.brick.test.screen"
+    "plugin": {
+        "test": {
+            "screens": {
+                "path": "net.isger.brick.test.screen"
             }
         }
     }
