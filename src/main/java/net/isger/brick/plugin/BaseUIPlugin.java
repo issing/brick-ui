@@ -44,10 +44,9 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
     public void screen(UICommand cmd) {
         String name = cmd.getName();
         Screen screen = getScreen(name);
-        Asserts.isNotNull(
-                screen,
-                "Unfound the specified screen [%s] in the Plugin [%s], Check whether it is configured in the brick configuration file",
-                name, this.getClass().getName());
+        Asserts.isNotNull(screen,
+                "Unfound the specified screen [%s] in the [%s] Plugin [%s], Check whether it is configured in the brick configuration file",
+                name, cmd.getDomain(), this.getClass().getName());
         (screen = screen.clone()).screen(cmd);
         cmd.setResult(screen);
     }
