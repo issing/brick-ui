@@ -6,12 +6,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.isger.brick.plugin.PluginOperator;
 import net.isger.util.Reflects;
 import net.isger.util.anno.Ignore;
+import net.isger.util.anno.Ignore.Mode;
 import net.isger.util.reflect.BoundField;
 
 @Ignore
 public class BaseScreen implements Screen {
 
     private PluginOperator operator;
+
+    @Ignore(mode = Mode.INCLUDE)
+    protected int code;
+
+    @Ignore(mode = Mode.INCLUDE)
+    protected String message;
+
+    @Ignore(mode = Mode.INCLUDE)
+    protected Object result;
 
     /** 指示参数 */
     private Map<String, Object> directs;
@@ -51,6 +61,18 @@ public class BaseScreen implements Screen {
                 result = params.length == 1 ? params[0] : params;
             }
         }
+        return result;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Object getResult() {
         return result;
     }
 
