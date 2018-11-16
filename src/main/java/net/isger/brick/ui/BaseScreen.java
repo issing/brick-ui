@@ -3,7 +3,6 @@ package net.isger.brick.ui;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.isger.brick.Constants;
 import net.isger.brick.core.Console;
@@ -43,7 +42,7 @@ public class BaseScreen implements Screen {
 
     public BaseScreen() {
         this.operator = new PluginOperator(this);
-        this.directs = new ConcurrentHashMap<String, Object>();
+        this.directs = new HashMap<String, Object>();
         this.direct("name", "");
     }
 
@@ -164,7 +163,7 @@ public class BaseScreen implements Screen {
             throw new IllegalStateException("Failure to clone screen", e);
         }
         screen.operator = new PluginOperator(screen);
-        screen.directs = new ConcurrentHashMap<String, Object>(this.directs);
+        screen.directs = new HashMap<String, Object>(this.directs);
         return screen;
     }
 
