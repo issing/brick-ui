@@ -11,7 +11,6 @@ import net.isger.brick.stub.model.Meta;
 import net.isger.util.Callable;
 import net.isger.util.Helpers;
 import net.isger.util.Reflects;
-import net.isger.util.Sqls;
 import net.isger.util.anno.Alias;
 import net.isger.util.anno.Ignore;
 import net.isger.util.anno.Ignore.Mode;
@@ -90,7 +89,7 @@ public class BaseScreen implements Screen {
                 BoundField field = (BoundField) args[0];
                 ResultMeta resultMeta = createResultMeta(field);
                 Map<String, Object> row = (Map<String, Object>) args[3]; // 行值
-                String fieldName = Sqls.toFieldName(resultMeta.sourceColumn);
+                String fieldName = Helpers.toFieldName(resultMeta.sourceColumn);
                 Object fieldValue = Helpers.getInstance(row, fieldName);
                 if (args[2] == Reflects.UNKNOWN) {
                     args[2] = fieldValue;
@@ -107,7 +106,7 @@ public class BaseScreen implements Screen {
                 }
                 if (rawClass.isInterface()) {
                     rawClass = console.getContainer().getInstance(Class.class,
-                            (Sqls.toColumnName(rawClass.getSimpleName())
+                            (Helpers.toColumnName(rawClass.getSimpleName())
                                     .replaceAll("[_]", ".") + ".class")
                                             .substring(1));
                 }
@@ -137,7 +136,7 @@ public class BaseScreen implements Screen {
             resultMeta.sourceColumn = (String) source.get("name");
             Map<String, Object> target = (Map<String, Object>) params
                     .get("target");
-            resultMeta.targetField = Sqls
+            resultMeta.targetField = Helpers
                     .toFieldName((String) target.get("name"));
         }
         return resultMeta;
