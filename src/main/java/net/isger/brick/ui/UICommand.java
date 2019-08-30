@@ -34,8 +34,7 @@ public class UICommand extends PluginCommand {
     }
 
     public static UICommand cast(BaseCommand cmd) {
-        return cmd == null || cmd.getClass() == UICommand.class ? (UICommand) cmd
-                : cmd.infect(new UICommand(false));
+        return cmd == null || cmd.getClass() == UICommand.class ? (UICommand) cmd : cmd.infect(new UICommand(false));
     }
 
 }

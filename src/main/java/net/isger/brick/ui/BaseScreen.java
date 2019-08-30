@@ -60,8 +60,7 @@ public class BaseScreen implements Screen {
                 if (name.startsWith("@")) {
                     result = this.directs.get(name);
                 } else {
-                    BoundField field = Reflects.getBoundField(this.getClass(),
-                            name);
+                    BoundField field = Reflects.getBoundField(this.getClass(), name);
                     if (field != null) {
                         result = field.getValue(this);
                     }
@@ -98,25 +97,19 @@ public class BaseScreen implements Screen {
                 TypeToken<?> typeToken = field.getToken();
                 Class<?> rawClass = typeToken.getRawClass();
                 if (Collection.class.isAssignableFrom(rawClass)) {
-                    rawClass = (Class<?>) Reflects
-                            .getActualType(typeToken.getType());
+                    rawClass = (Class<?>) Reflects.getActualType(typeToken.getType());
                 } else if (rawClass.isArray()) {
-                    rawClass = (Class<?>) Reflects
-                            .getComponentType(typeToken.getType());
+                    rawClass = (Class<?>) Reflects.getComponentType(typeToken.getType());
                 }
                 if (rawClass.isInterface()) {
-                    rawClass = console.getContainer().getInstance(Class.class,
-                            (Helpers.toColumnName(rawClass.getSimpleName())
-                                    .replaceAll("[_]", ".") + ".class")
-                                            .substring(1));
+                    rawClass = console.getContainer().getInstance(Class.class, (Helpers.toColumnName(rawClass.getSimpleName()).replaceAll("[_]", ".") + ".class").substring(1));
                 }
                 if (!(args[2] instanceof Map)) {
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put(resultMeta.targetField, args[2]);
                     args[2] = params;
                 }
-                return Reflects.newInstance(rawClass,
-                        (Map<String, Object>) args[2]);
+                return Reflects.newInstance(rawClass, (Map<String, Object>) args[2]);
             }
         };
     }
@@ -129,15 +122,11 @@ public class BaseScreen implements Screen {
             resultMeta.sourceColumn = resultMeta.meta.getName();
             resultMeta.targetField = (String) resultMeta.meta.getValue();
         } else {
-            Map<String, Object> params = (Map<String, Object>) resultMeta.meta
-                    .getValue();
-            Map<String, Object> source = (Map<String, Object>) params
-                    .get("source");
+            Map<String, Object> params = (Map<String, Object>) resultMeta.meta.getValue();
+            Map<String, Object> source = (Map<String, Object>) params.get("source");
             resultMeta.sourceColumn = (String) source.get("name");
-            Map<String, Object> target = (Map<String, Object>) params
-                    .get("target");
-            resultMeta.targetField = Helpers
-                    .toFieldName((String) target.get("name"));
+            Map<String, Object> target = (Map<String, Object>) params.get("target");
+            resultMeta.targetField = Helpers.toFieldName((String) target.get("name"));
         }
         return resultMeta;
     }
