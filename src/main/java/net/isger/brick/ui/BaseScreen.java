@@ -11,6 +11,7 @@ import net.isger.brick.stub.model.Meta;
 import net.isger.util.Callable;
 import net.isger.util.Helpers;
 import net.isger.util.Reflects;
+import net.isger.util.Strings;
 import net.isger.util.anno.Alias;
 import net.isger.util.anno.Ignore;
 import net.isger.util.anno.Ignore.Mode;
@@ -40,13 +41,19 @@ public class BaseScreen implements Screen {
     private Map<String, Object> directs;
 
     public BaseScreen() {
-        this.operator = new PluginOperator(this);
-        this.directs = new HashMap<String, Object>();
-        this.direct("name", "");
+        operator = new PluginOperator(this);
+        directs = new HashMap<String, Object>();
+        direct("name", "");
     }
 
     protected void direct(String name, Object value) {
         directs.put("@" + name, value);
+    }
+
+    /**
+     * 空操作
+     */
+    public void operate() {
     }
 
     public void screen(UICommand cmd) {
@@ -58,9 +65,9 @@ public class BaseScreen implements Screen {
         see: {
             if (name != null) {
                 if (name.startsWith("@")) {
-                    result = this.directs.get(name);
+                    result = directs.get(name);
                 } else {
-                    BoundField field = Reflects.getBoundField(this.getClass(), name);
+                    BoundField field = Reflects.getBoundField(getClass(), name);
                     if (field != null) {
                         result = field.getValue(this);
                     }
@@ -88,7 +95,7 @@ public class BaseScreen implements Screen {
                 BoundField field = (BoundField) args[0];
                 ResultMeta resultMeta = createResultMeta(field);
                 Map<String, Object> row = (Map<String, Object>) args[3]; // 行值
-                String fieldName = Helpers.toFieldName(resultMeta.sourceColumn);
+                String fieldName = Strings.toFieldName(resultMeta.sourceColumn);
                 Object fieldValue = Helpers.getInstance(row, fieldName);
                 if (args[2] == Reflects.UNKNOWN) {
                     args[2] = fieldValue;
@@ -102,7 +109,7 @@ public class BaseScreen implements Screen {
                     rawClass = (Class<?>) Reflects.getComponentType(typeToken.getType());
                 }
                 if (rawClass.isInterface()) {
-                    rawClass = console.getContainer().getInstance(Class.class, (Helpers.toColumnName(rawClass.getSimpleName()).replaceAll("[_]", ".") + ".class").substring(1));
+                    rawClass = console.getContainer().getInstance(Class.class, (Strings.toColumnName(rawClass.getSimpleName()).replaceAll("[_]", ".") + ".class").substring(1));
                 }
                 if (!(args[2] instanceof Map)) {
                     Map<String, Object> params = new HashMap<String, Object>();
@@ -126,7 +133,7 @@ public class BaseScreen implements Screen {
             Map<String, Object> source = (Map<String, Object>) params.get("source");
             resultMeta.sourceColumn = (String) source.get("name");
             Map<String, Object> target = (Map<String, Object>) params.get("target");
-            resultMeta.targetField = Helpers.toFieldName((String) target.get("name"));
+            resultMeta.targetField = Strings.toFieldName((String) target.get("name"));
         }
         return resultMeta;
     }
@@ -151,7 +158,7 @@ public class BaseScreen implements Screen {
             throw new IllegalStateException("Failure to clone screen", e);
         }
         screen.operator = new PluginOperator(screen);
-        screen.directs = new HashMap<String, Object>(this.directs);
+        screen.directs = new HashMap<String, Object>(directs);
         return screen;
     }
 

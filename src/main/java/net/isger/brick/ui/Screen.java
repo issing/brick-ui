@@ -8,6 +8,12 @@ package net.isger.brick.ui;
  */
 public interface Screen extends Cloneable {
 
+    public static final String DIRECT_NAME = "name";
+
+    public static final String DIRECT_LOCATION = "location";
+
+    public static final String DIRECT_TARGET = "target";
+
     /**
      * 荧幕入口
      * 
