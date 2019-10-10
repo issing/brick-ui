@@ -8,6 +8,7 @@ import net.isger.brick.Constants;
 import net.isger.brick.core.Console;
 import net.isger.brick.plugin.PluginOperator;
 import net.isger.brick.stub.model.Meta;
+import net.isger.util.Asserts;
 import net.isger.util.Callable;
 import net.isger.util.Helpers;
 import net.isger.util.Reflects;
@@ -155,7 +156,7 @@ public class BaseScreen implements Screen {
         try {
             screen = (BaseScreen) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException("Failure to clone screen", e);
+            throw Asserts.state("Failure to clone screen", e);
         }
         screen.operator = new PluginOperator(screen);
         screen.directs = new HashMap<String, Object>(directs);
