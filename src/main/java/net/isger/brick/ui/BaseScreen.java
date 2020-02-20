@@ -9,14 +9,15 @@ import net.isger.brick.core.Console;
 import net.isger.brick.plugin.PluginOperator;
 import net.isger.brick.stub.model.Meta;
 import net.isger.util.Asserts;
-import net.isger.util.Callable;
 import net.isger.util.Helpers;
 import net.isger.util.Reflects;
 import net.isger.util.Strings;
 import net.isger.util.anno.Alias;
 import net.isger.util.anno.Ignore;
 import net.isger.util.anno.Ignore.Mode;
+import net.isger.util.reflect.AssemblerAdapter;
 import net.isger.util.reflect.BoundField;
+import net.isger.util.reflect.ClassAssembler;
 import net.isger.util.reflect.TypeToken;
 
 @Ignore
@@ -89,17 +90,22 @@ public class BaseScreen implements Screen {
      *
      * @return
      */
-    public Callable<Object> createAssemble() {
-        return new Callable<Object>() {
+    public ClassAssembler createAssembler() {
+        return new AssemblerAdapter() {
+            public Class<?> assemble(Class<?> rawClass) {
+                if (rawClass.isInterface()) {
+                    rawClass = console.getContainer().getInstance(Class.class, (Strings.toColumnName(rawClass.getSimpleName()).replaceAll("[_]", ".") + ".class").substring(1));
+                }
+                return rawClass;
+            }
+
             @SuppressWarnings("unchecked")
-            public Object call(Object... args) {
-                BoundField field = (BoundField) args[0];
+            public Object assemble(BoundField field, Object instance, Object value, Object... args) {
                 ResultMeta resultMeta = createResultMeta(field);
-                Map<String, Object> row = (Map<String, Object>) args[3]; // 行值
+                Map<String, Object> data = (Map<String, Object>) args[0]; // 行值
                 String fieldName = Strings.toFieldName(resultMeta.sourceColumn);
-                Object fieldValue = Helpers.getInstance(row, fieldName);
-                if (args[2] == Reflects.UNKNOWN) {
-                    args[2] = fieldValue;
+                if (value == Reflects.UNKNOWN) {
+                    value = Helpers.getInstance(data, fieldName);
                 }
                 /* 获取元素类型 */
                 TypeToken<?> typeToken = field.getToken();
@@ -109,15 +115,13 @@ public class BaseScreen implements Screen {
                 } else if (rawClass.isArray()) {
                     rawClass = (Class<?>) Reflects.getComponentType(typeToken.getType());
                 }
-                if (rawClass.isInterface()) {
-                    rawClass = console.getContainer().getInstance(Class.class, (Strings.toColumnName(rawClass.getSimpleName()).replaceAll("[_]", ".") + ".class").substring(1));
-                }
-                if (!(args[2] instanceof Map)) {
+                rawClass = assemble(rawClass);
+                if (!(value instanceof Map)) {
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put(resultMeta.targetField, args[2]);
-                    args[2] = params;
+                    params.put(resultMeta.targetField, value);
+                    value = params;
                 }
-                return Reflects.newInstance(rawClass, (Map<String, Object>) args[2]);
+                return Reflects.newInstance(rawClass, (Map<String, Object>) value);
             }
         };
     }
