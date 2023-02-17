@@ -5,12 +5,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.isger.brick.core.Console;
 import net.isger.brick.core.ConsoleManager;
-import net.isger.brick.core.Module;
-import net.isger.brick.inject.ContainerProvider;
 import net.isger.brick.plugin.PluginCommand;
-import net.isger.brick.plugin.UIPluginModule;
 import net.isger.brick.ui.UICommand;
-import net.isger.brick.ui.UIDesigner;
 
 public class BrickUITest extends TestCase {
 
@@ -19,18 +15,7 @@ public class BrickUITest extends TestCase {
     public BrickUITest(String testName) {
         super(testName);
         manager = new ConsoleManager();
-        manager.getContainerProviders();
-        manager.addContainerProvider(new ContainerProvider() {
-            public void register(net.isger.brick.inject.ContainerBuilder builder) {
-                builder.factory(Module.class, StandardConstants.MOD_PLUGIN,
-                        UIPluginModule.class);
-                builder.factory(UIDesigner.class, StandardConstants.MOD_PLUGIN);
-            }
-
-            public boolean isReload() {
-                return false;
-            }
-        });
+        manager.load();
     }
 
     public static Test suite() {

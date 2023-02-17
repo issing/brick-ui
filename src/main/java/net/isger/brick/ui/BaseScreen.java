@@ -17,11 +17,11 @@ import net.isger.util.reflect.BoundField;
 public class BaseScreen implements Screen {
 
     /** 控制台 */
-    @Ignore(mode = Mode.INCLUDE)
+    @Ignore(mode = Mode.INCLUDE, serialize = false)
     @Alias(Constants.SYSTEM)
     private Console console;
 
-    private PluginOperator operator;
+    private volatile transient PluginOperator operator;
 
     @Ignore(mode = Mode.INCLUDE)
     protected int code;
@@ -32,8 +32,11 @@ public class BaseScreen implements Screen {
     @Ignore(mode = Mode.INCLUDE)
     protected Object result;
 
+    @Ignore(mode = Mode.INCLUDE)
+    protected String state;
+
     /** 指示参数 */
-    private Map<String, Object> directs;
+    private volatile transient Map<String, Object> directs;
 
     public BaseScreen() {
         operator = new PluginOperator(this);
@@ -88,6 +91,10 @@ public class BaseScreen implements Screen {
 
     public Object getResult() {
         return result;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public Screen clone() {
