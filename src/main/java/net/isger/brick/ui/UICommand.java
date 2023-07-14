@@ -2,9 +2,9 @@ package net.isger.brick.ui;
 
 import net.isger.brick.core.BaseCommand;
 import net.isger.brick.core.Command;
-import net.isger.brick.plugin.PluginCommand;
+import net.isger.brick.plugin.UIPluginCommand;
 
-public class UICommand extends PluginCommand {
+public class UICommand extends UIPluginCommand {
 
     public UICommand() {
     }

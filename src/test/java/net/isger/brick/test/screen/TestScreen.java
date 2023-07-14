@@ -6,9 +6,9 @@ import net.isger.brick.ui.BaseScreen;
 
 public class TestScreen extends BaseScreen {
 
-    public void test() {
+    public void greeting() {
         TestBean bean = BaseCommand.getAction().getParameter(TestBean.class);
-        System.out.println("this is plugin.test: " + bean);
+        System.out.println("this is plugin.greeting: " + bean);
     }
 
 }

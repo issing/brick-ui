@@ -34,10 +34,10 @@ public class BaseUIPlugin extends BasePlugin implements UIPlugin {
 
     public void operate(GateCommand cmd) {
         PluginCommand pcmd = (PluginCommand) cmd;
-        if (Strings.isEmpty(pcmd.getName()) || !(cmd instanceof UICommand)) {
+        if (Strings.isEmpty(pcmd.getName()) || !(cmd instanceof UIPluginCommand)) {
             super.operate(cmd);
         } else {
-            screen((UICommand) pcmd);
+            screen(UICommand.cast(pcmd));
         }
     }
 

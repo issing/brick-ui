@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import net.isger.brick.core.Console;
 import net.isger.brick.core.ConsoleManager;
 import net.isger.brick.plugin.PluginCommand;
+import net.isger.brick.plugin.UIPluginCommand;
 import net.isger.brick.ui.UICommand;
 
 public class BrickUITest extends TestCase {
@@ -28,13 +29,13 @@ public class BrickUITest extends TestCase {
         UICommand cmd = new UICommand();
         cmd.setDomain("test");
         cmd.setName("test");
-        cmd.setOperate("test");
+        cmd.setOperate("greeting");
         cmd.setParameter("id", "1");
         cmd.setParameter("name", "first");
         console.execute(cmd);
 
         // 调用插件
-        PluginCommand pcmd = UICommand.cast(cmd);
+        PluginCommand pcmd = UIPluginCommand.cast(cmd);
         pcmd.setParameter("test", "this is test.");
         console.execute(pcmd);
 
