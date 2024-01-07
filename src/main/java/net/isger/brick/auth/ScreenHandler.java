@@ -15,6 +15,7 @@ public class ScreenHandler extends PluginHandler {
         AuthCommand cmd = (AuthCommand) message;
         Object token = cmd.getToken();
         if (token instanceof UICommand) {
+            /* 绕过权限检测，进入自定义检测流程 */
             toCommand((UICommand) token);
             cmd.setDomain(null);
             cmd.setOperate(null);
