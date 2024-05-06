@@ -16,12 +16,16 @@ import net.isger.util.reflect.BoundField;
 @Ignore
 public class BaseScreen implements Screen {
 
-    /** 控制台 */
-    @Ignore(mode = Mode.INCLUDE, serialize = false)
-    @Alias(Constants.SYSTEM)
-    private Console console;
-
     private volatile transient PluginOperator operator;
+
+    /** 控制台 */
+    @Alias(Constants.SYSTEM)
+    @Ignore(mode = Mode.INCLUDE, serialize = false)
+    protected Console console;
+
+    /** 开发标识 */
+    @Ignore(mode = Mode.INCLUDE, serialize = false)
+    protected boolean develop;
 
     @Ignore(mode = Mode.INCLUDE)
     protected int code;
@@ -39,13 +43,13 @@ public class BaseScreen implements Screen {
     private volatile transient Map<String, Object> directs;
 
     public BaseScreen() {
-        operator = new PluginOperator(this);
-        directs = new HashMap<String, Object>();
-        direct("name", "");
+        this.operator = new PluginOperator(this);
+        this.directs = new HashMap<String, Object>();
+        this.direct("name", "");
     }
 
     protected void direct(String name, Object value) {
-        directs.put("@" + name, value);
+        this.directs.put("@" + name, value);
     }
 
     /**
@@ -55,7 +59,7 @@ public class BaseScreen implements Screen {
     }
 
     public void screen(UICommand cmd) {
-        operator.operate(cmd);
+        this.operator.operate(cmd);
     }
 
     public Object see(String name, Object... params) {
@@ -63,7 +67,7 @@ public class BaseScreen implements Screen {
         see: {
             if (name != null) {
                 if (name.startsWith("@")) {
-                    result = directs.get(name);
+                    result = this.directs.get(name);
                 } else {
                     BoundField field = Reflects.getBoundField(getClass(), name);
                     if (field != null) {
@@ -95,6 +99,48 @@ public class BaseScreen implements Screen {
 
     public String getState() {
         return state;
+    }
+
+    /**
+     * 设置响应
+     * 
+     * @param code
+     * @param message
+     */
+    protected final void setResponse(int code, String message) {
+        this.setResponse(code, message, null, null);
+    }
+
+    /**
+     * 设置响应
+     *
+     * @param code
+     * @param message
+     * @param result
+     */
+    protected final void setResponse(int code, String message, Object result) {
+        this.setResponse(code, message, result, null);
+    }
+
+    /**
+     * 设置响应
+     * 
+     * @param code
+     * @param message
+     * @param result
+     * @param state
+     */
+    protected final void setResponse(int code, String message, Object result, String state) {
+        this.code = code;
+        this.message = message;
+        if (result instanceof Throwable) {
+            if (this.develop) {
+                ((Throwable) result).printStackTrace();
+            }
+        } else {
+            this.result = result;
+        }
+        this.state = state;
     }
 
     public Screen clone() {
